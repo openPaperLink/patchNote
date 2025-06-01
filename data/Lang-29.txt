@@ -1,0 +1,11 @@
+**Cause of the Bug:**  
+The bug is caused by using a `float` return type for the `toJavaVersionInt` method instead of `int`. A `float` can lead to precision loss and inaccuracies, which is unsuitable for discrete integral values such as Java version numbers.
+
+**Consequences of the Bug:**  
+This can result in incorrect behavior in operations relying on precise Java version numbers, such as compatibility checks or environment-specific logic, potentially leading to misclassification of Java runtime versions during validation or initialization workflows.
+
+**Evidence of the Bug:**  
+The issue is evident in the unit test `testJavaVersionAsInt`, where precise integer representations—e.g., `120` for version `1.2`, or `131` for `1.3.1`—are expected. Using `float` for these values compromises correctness, particularly for intricate version comparisons.
+
+**Fix:**  
+The patch addresses the issue by changing the return type of the `toJavaVersionInt` method to `int`, ensuring accurate representation of Java version numbers. This eliminates precision errors associated with floating-point calculations, aligning with expected input-output behavior validated by unit tests.

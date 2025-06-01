@@ -1,0 +1,5 @@
+The bug in the `compareTo` method of the `Fraction` class arises from using the `doubleValue` method for comparison, which can lead to precision errors due to the limitations of double representation for large numbers. This issue results in potentially incorrect outcomes for certain inputs, undermining the accuracy needed for precise fraction comparisons.
+
+The consequence of this bug is inaccurate ordering of fractions, affecting scenarios where high precision is crucial. Fraction comparisons may give incorrect results due to precision loss, as demonstrated by test cases like `testCompareTo`, where fractions nearly equal (`pi1` and `pi2`) are wrongly deemed equal due to the precision limitations of `doubleValue()`.
+
+Evidence of this is provided through test results that show precision failures, comparing specific fractions with checks ensuring differences are not larger than a small threshold (`1.0e-20`). The fix involves using integer arithmetic for comparison: cross multiplication with long casting prevents overflow and maintains accuracy by comparing products of numerators and denominators directly, eliminating floating-point errors.

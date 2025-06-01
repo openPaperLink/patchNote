@@ -1,0 +1,7 @@
+The bug arises due to the use of `MathRuntimeException.createIllegalArgumentException` in the `PoissonDistributionImpl` constructor when handling non-positive mean values. This results in a less informative error message that does not explicitly communicate the constraint requiring the mean to be strictly positive.
+
+The consequence is that when an invalid mean value (non-positive) is supplied, the resulting exception creates confusion for developers by providing a generic error message instead of clearly specifying the issue with the parameter.
+
+Evidence of the bug is found in the `testMean` unit test, which expects a `NotStrictlyPositiveException` to be thrown for negative mean values, demonstrating the need for a more appropriate exception.
+
+The fix replaces `MathRuntimeException.createIllegalArgumentException` with `NotStrictlyPositiveException`, ensuring that developers receive a precise exception accurately reflecting the requirement for a strictly positive mean in the Poisson distribution.

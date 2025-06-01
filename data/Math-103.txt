@@ -1,0 +1,7 @@
+The bug in the original code of the `cumulativeProbability` method in `NormalDistributionImpl` arises from assuming that the `Erf.erf` computation always converges. This leads to a `MaxIterationsExceededException` for extreme `x` values (more than 20 standard deviations from the mean), which was not handled, causing runtime exceptions.
+
+The consequence of this bug is significant, as it disrupts calculations of the cumulative distribution function (CDF) for extreme `x` values. Instead of returning `0` for values far below the mean or `1` for values far above, the method throws exceptions, potentially causing failures in dependent applications and processes.
+
+Evidence of the bug is seen in the `testExtremeValues`, which shows that for `x` values further than 10 standard deviations from the mean, the method fails to return the expected CDF approximations, throwing exceptions instead.
+
+The fix involves wrapping the error function computation in a `try-catch` block. If a `MaxIterationsExceededException` occurs, the method checks if `x` is more than 20 standard deviations from the mean, returning `0.0` or `1.0` as appropriate. This ensures correct behavior for extreme inputs while rethrowing exceptions for other issues.

@@ -1,0 +1,13 @@
+**Summary:**
+
+1. **Cause of the Bug:**  
+   The bug occurs because the `ParsePosition` (`pos`) is not advanced when the current character is an escaped quote (`'`) and `escapingOn` is enabled. This causes the parser to repeatedly process the same position, leading to incorrect behavior.
+
+2. **Consequences of the Bug:**  
+   The parser fails to handle escaped quotes in the input pattern, resulting in improper parsing. For instance, an escaped single quote (`''`) is not interpreted correctly in the formatted output.
+
+3. **Evidence:**  
+   The failing unit test `testEscapedQuote_LANG_477` demonstrates the issue. For the input pattern `"it''s a {0,lower} 'test'!"`, the expected output `"it's a dummy test!"` is not produced, indicating improper escaped quote handling.
+
+4. **Fix:**  
+   The fix involves calling the `next` method to advance the `ParsePosition` (`pos`) when encountering an escaped quote. This ensures the parser progresses beyond the escape sequence and handles subsequent characters correctly, restoring proper parsing behavior.

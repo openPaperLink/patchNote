@@ -1,0 +1,15 @@
+### Bug Summary:
+
+The bug in the original `StringUtils.equals` method arose from using `cs1.equals(cs2)` indiscriminately for all `CharSequence` types, which can lead to incorrect comparisons. Since `CharSequence` is a generic interface, its `.equals()` method differs across implementations. For instance, `String.equals` correctly compares characters, but this may not hold true for non-`String` implementations like `StringBuilder`. Therefore, comparing `CharSequence` objects of different types could yield incorrect results.
+
+### Consequences:
+
+This inconsistency causes unexpected behavior when `equals` is called on different `CharSequence` implementations. For example, a comparison between `"foo"` (a `String`) and `"foo"` from a `StringBuilder` returns `false`, violating the utility method's expectation of reliable and predictable comparisons, potentially leading to subtle bugs in critical application logic.
+
+### Evidence:
+
+Unit tests reveal the failure: comparisons like `StringUtils.equals(fooCs, (CharSequence)new StringBuilder(FOO))` are expected to return `true` but return `false` without the patch. These tests confirm that the initial implementation does not fulfill the required functionality.
+
+### Fix:
+
+The fix includes two main changes: a type check to use `String.equals()` when both `cs1` and `cs2` are `Strings` for optimal performance, and for other cases, using `CharSequenceUtils.regionMatches`, which compares sequences character-by-character, ensuring correctness across any `CharSequence` implementation. This approach resolves the discrepancies highlighted by the unit tests.

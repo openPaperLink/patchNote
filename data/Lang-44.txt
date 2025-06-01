@@ -1,0 +1,9 @@
+**Summary:**
+
+1. **Cause of the bug:** The bug was caused by the failure to properly handle single-character non-numeric strings in `NumberUtils.createNumber`, allowing invalid characters like 'l', 'L', 'f', 'F', etc., to be parsed instead of immediately throwing a `NumberFormatException`.
+
+2. **Consequences of the bug:** This led to erratic behavior and potential errors in applications relying on this method, as single-character non-digit inputs were incorrectly accepted as valid numbers.
+
+3. **Evidence:** Tests like `testLang457` showed that inputs such as "l", "L", "f", "F" were erroneously processed as numbers, demonstrating the need for improved validation.
+
+4. **Fix:** The issue was resolved by adding a check to ensure a single-character string is a valid digit using `!Character.isDigit(val.charAt(0))`, throwing a `NumberFormatException` for any non-numeric input.

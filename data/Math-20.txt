@@ -1,0 +1,11 @@
+**Cause of the bug:**  
+The bug in the `repairAndDecode` method stems from inadequate consideration of the `isRepairMode` flag. It skips the repair step if `boundaries` are defined but `isRepairMode` is `false`, potentially allowing the objective variable array (`x`) to bypass boundary constraints. 
+
+**Consequences of the bug:**  
+This oversight can lead to optimizer outputs that exceed specified boundaries, even when those boundaries are defined, violating expected constraints such as in the `testMath864` unit test.
+
+**Evidence to prove the bug:**  
+In `testMath864`, the optimizer is tested with boundaries where the output should not exceed `0.5`. With the buggy version, the result can violate this upper boundary, thus failing the test and demonstrating the bug's presence.
+
+**How to fix it:**  
+The solution involves modifying the method to check both `boundaries` presence and `isRepairMode` status. The fix ensures that `repair` is invoked only when both conditions are met, thus enforcing boundary constraints before decoding and maintaining intended optimization behavior.

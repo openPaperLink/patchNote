@@ -1,0 +1,11 @@
+**Cause of the Bug:**
+The bug is caused by a missing check in the `BrentSolver.solve()` method to ensure that the interval `[min, max]` is a valid bracketing interval. Bracketing requires that function values at the endpoints (`yMin` and `yMax`) have opposite signs (`f(min) * f(max) < 0`), indicating a root exists between them.
+
+**Consequences of the Bug:**
+Invoking the `solve()` method on non-bracketing intervals can lead to the Brent method incorrectly assuming there is a root, violating its mathematical premise. This may cause the algorithm to enter an infinite loop, fail to converge, or produce invalid results, potentially leading to computational inefficiencies or errors in systems dependent on the solver for root-finding.
+
+**Evidence to Prove the Bug:**
+The test case `testBadEndpoints` shows the issue by expecting an exception for invalid intervals. These cases include scenarios where both endpoints have the same function value or when they have the same sign (`yMin * yMax > 0`). The test results in missing exceptions suggest the absence of proper validation in the original implementation.
+
+**How to Fix the Bug:**
+The fix includes a condition that checks if the function values at the endpoints have opposite signs (`yMin * yMax <= 0`). If not, it immediately throws an `IllegalArgumentException` with an informative message, preventing the algorithm from executing on invalid inputs. This ensures the method operates on valid intervals as per the Brent algorithm's requirements.

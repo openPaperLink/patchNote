@@ -1,0 +1,11 @@
+### Cause of the Bug:
+The bug occurs because the original implementation does not adequately handle scenarios where multiple decision variables share the same basic row in the simplex tableau. This oversight leads to incorrect coefficient calculations due to the failure to globally track which rows are already assigned to coefficients.
+
+### Consequences of the Bug:
+The bug can result in invalid or overlapping solutions for decision variables, producing non-optimal or infeasible results. For instance, it can assign non-zero coefficients to multiple variables associated with the same basic row, which violates constraints and leads to incorrect results in optimization problems.
+
+### Evidence to Prove the Bug:
+The unit test `testMath272` highlights the issue, as it fails due to incorrect coefficient assignments. The test verifies the assignment of values constrained by relationships, revealing that variables mistakenly compete for the same basic row, thus confirming the erroneous behavior and invalid outputs.
+
+### How to Fix It:
+The fix involves introducing a `Set<Integer> basicRows` to track rows already assigned to coefficients. It ensures no duplicate assignments occur by checking if the current `basicRow` is already present in `basicRows`. If not, the coefficient is updated correctly and the row is added to the set. This effective handling eliminates overlapping solutions in the simplex tableau, adhering to simplex algorithm rules.

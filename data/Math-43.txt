@@ -1,0 +1,7 @@
+The bug in the `SummaryStatistics` class arises from incorrect conditionals used when incrementing statistical measures like `mean`, `variance`, and `geomean`. The flaw lies in using `instanceof` checks for the statistical measure implementations, which fail when custom implementations that are operationally identical but distinct instances are used, leading to inaccurate results in statistical summaries.
+
+The consequence of this bug is that when overridden implementations are used, necessary increments might be skipped, affecting the accuracy of the mean, variance, and geometric mean calculations. This impacts scenarios where custom implementations extending the default behaviors are introduced.
+
+Evidence of this issue is demonstrated by tests such as `testOverrideMeanWithMathClass`, which confirm that with original instance checks, custom implementations lead to logical errors because of reliance solely on class identity.
+
+The fix involves changing the conditionals to use identity checks: comparing instances directly with the default implementations (`mean`, `variance`, `geoMean`). This ensures increments occur only when necessary, allowing accurate computations regardless of customized scenarios.
