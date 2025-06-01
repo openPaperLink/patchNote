@@ -1,0 +1,7 @@
+The bug in the JavaScript syntax optimization method arises from not verifying if a child node in a block is an `EXPR_RESULT` and if its function call has certain properties, such as being an event handler. This leads to incorrect folding of expressions, causing erratic behavior in Internet Explorer due to changes in event handler execution semantics.
+
+The consequences are incorrect optimizations for event handler calls, particularly those starting with "on," or using implicit "this" contexts, which alter the code's behavior unpredictably in environments like IE.
+
+Evidence of the bug is provided in the `testIssue291` test case, which shows how event handler calls like `f.onchange();` are incorrectly optimized, leading to different reactions based on their expression context.
+
+The fix involves adding checks to identify when these expressions should not be folded, particularly for event handlers and array-like access, ensuring that such JavaScript executes naturally and correctly, especially in legacy browsers like IE.

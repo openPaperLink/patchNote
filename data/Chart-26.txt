@@ -1,0 +1,5 @@
+The bug arises due to a missing null-check on the `owner` variable before accessing its `getEntityCollection()` method. The code incorrectly assumes `plotState.getOwner()` will always return a non-null `ChartRenderingInfo` object. This leads to a `NullPointerException` when `owner` is null, disrupting chart rendering and image creation processes in cases where `plotState` is partially or uninitialized.
+
+Evidence for the bug is observed in tests like `testDrawWithNullInfo`, where null dereferences caused stack traces confirming the exception during rendering.
+
+The fix involves adding an explicit null-check (`if (owner != null)`) to ensure that `owner.getEntityCollection()` is only accessed when `owner` is non-null. This preserves the intended behavior and addresses the issue without altering logic, as verified by successful execution of previously failing tests.

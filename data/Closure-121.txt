@@ -1,0 +1,7 @@
+The bug in the original code arises because the logic for determining whether a variable can be safely inlined fails to consider if its assignment occurs exclusively within the same scope as its declaration. The condition previously relied solely on `referenceInfo.isAssignedOnceInLifetime()`, which is insufficient since a variable might be assigned across different scopes, leading to incorrect behavior during inlining.
+
+The consequences of this bug are exemplified in the test `testExternalIssue1053`, where the variable `u` is externally modified, contradicting the assumption of single assignment within a safe scope. The faulty inlining results in semantic errors, such as incorrect variable equality (`alert(x === u)`), potentially causing hard-to-debug runtime issues that compromise program correctness.
+
+Evidence of the bug's impact is found in `testExternalIssue1053`, highlighting how cross-scope assignments during inlining produce incorrect outputs. The added condition `referenceInfo.isOnlyAssignmentSameScopeAsDeclaration()` ensures assignments are confined to the same scope as declarations, preventing incorrect inlining decisions. The enhancement for constants (`isInlineableDeclaredConstant(v, referenceInfo)`) further restricts which variables can be legally inlined.
+
+The fix addresses these issues by harmonizing well-definedness checks with scope-aware constraints, ensuring variables are only inlined if their assignments are scoped correctly or if they are constants, thereby preventing runtime bugs and maintaining optimization goals.

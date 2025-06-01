@@ -1,0 +1,11 @@
+**Cause of the Bug:**  
+The bug arises from the logical condition that checks for dependency management. The prior implementation combined `options.dependencyOptions.needsManagement()` with `options.closurePass`, but the latter is redundant. This caused dependency sorting logic to be skipped when `closurePass` was false, even if `needsManagement()` required it.
+
+**Consequences of the Bug:**  
+Incorrect dependency handling in the compilation process leads to issues such as incorrect input file ordering, circular dependencies, or broken functionality at runtime. This affects scenarios where `DependencyOptions` explicitly requires sorting or pruning, potentially causing runtime errors.
+
+**Evidence:**  
+The issue aligns with the failure of the `testDependencySorting` test case, which highlights incorrect input file ordering. The bug contradicts the test's expectations that dependency sorting should exclusively depend on `DependencyOptions.needsManagement()` and not on the `closurePass` flag.
+
+**Fix:**  
+The patch resolves the issue by removing the `closurePass` dependency, making the decision to handle stale inputs driven solely by `DependencyOptions.needsManagement()`. This ensures consistent dependency processing based on `DependencyOptions` configuration and aligns the logic with test expectations like those in `testDependencySorting`.

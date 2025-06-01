@@ -1,0 +1,11 @@
+**Cause of the Bug:**  
+The bug occurs due to the mishandling of quoted strings in the `DisambiguateProperties` class when processing property names in JavaScript object literals. The logic did not account for quoted property names, which should not interfere with the renaming process.
+
+**Consequences of the Bug:**  
+This oversight results in preserving original property names that should have been disambiguated, causing naming conflicts and erroneous behavior due to collisions of unrelated properties with identically quoted names.
+
+**Evidence to Prove It:**  
+Unit tests `testTwoTypes4` and `testOneType4` demonstrate the issue with scenarios involving quoted property keys. The tests verify that quoted properties were altered incorrectly before the fix but remain unchanged afterward, proving the semantic expectations were violated and corrected.
+
+**How to Fix It:**  
+The fix introduces a conditional check (`if (child.isQuotedString()) { continue; }`) to skip quoted properties during the traversal, ensuring only non-quoted property names undergo disambiguation, thereby preserving the intended JavaScript object semantics.
