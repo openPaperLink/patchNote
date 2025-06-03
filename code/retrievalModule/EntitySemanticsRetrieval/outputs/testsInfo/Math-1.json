@@ -1,0 +1,10 @@
+{
+  "description" : "the following is information about unit tests related with the patch",
+  "information" : [ {
+    "testName" : "testDigitLimitConstructor",
+    "testBody" : "{\n  assertFraction(2,5,new Fraction(0.4,9));\n  assertFraction(2,5,new Fraction(0.4,99));\n  assertFraction(2,5,new Fraction(0.4,999));\n  assertFraction(3,5,new Fraction(0.6152,9));\n  assertFraction(8,13,new Fraction(0.6152,99));\n  assertFraction(510,829,new Fraction(0.6152,999));\n  assertFraction(769,1250,new Fraction(0.6152,9999));\n  assertFraction(1,2,new Fraction(0.5000000001,10));\n}\n"
+  }, {
+    "testName" : "testDigitLimitConstructor",
+    "testBody" : "{\n  assertFraction(2,5,new BigFraction(0.4,9));\n  assertFraction(2,5,new BigFraction(0.4,99));\n  assertFraction(2,5,new BigFraction(0.4,999));\n  assertFraction(3,5,new BigFraction(0.6152,9));\n  assertFraction(8,13,new BigFraction(0.6152,99));\n  assertFraction(510,829,new BigFraction(0.6152,999));\n  assertFraction(769,1250,new BigFraction(0.6152,9999));\n  assertFraction(1,2,new BigFraction(0.5000000001,10));\n}\n"
+  } ]
+}
