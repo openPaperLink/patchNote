@@ -53,13 +53,13 @@
 
 #### Steps to generation module
 
-**1. retrieve example**
+**1. Retrieve example**
 
 `cd generationModule/`
 
 `python examples.py`
 
-**2. generate bug-fixing patch explanation**
+**2. Generate bug-fixing patch explanation**
 
 `python llm_generation.py`
 
