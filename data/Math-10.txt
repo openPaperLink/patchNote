@@ -1,0 +1,5 @@
+The bug in the `DSCompiler` arises from the improper handling of special numeric cases, such as zero values with different signs (+0, -0) and infinite values, when computing the arc tangent using the `atan2` method. This leads to incorrect results in trigonometric operations, affecting computations requiring precise angle determination and causing inaccuracies in applications involving coordinates and angles.
+
+Evidence of the bug is demonstrated by the unit test `testAtan2SpecialCases`, which previously failed to return mathematically correct results for special input cases, like producing π for (+0.0, -0.0) or 0 with a negative sign for (-0.0, +0.0).
+
+The issue is resolved by using `FastMath.atan2`, which appropriately manages these special input cases and accurately computes the arc tangent, thereby ensuring mathematically consistent results and enhancing the robustness of trigonometric calculations.

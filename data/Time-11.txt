@@ -1,0 +1,5 @@
+The bug in the `ZoneInfoCompiler` class was caused by improper initialization of the `cVerbose` variable, a `ThreadLocal<Boolean>`. Initially set using a static initializer block that called `cVerbose.set(Boolean.FALSE)`, this approach was flawed as it affected only the current thread, leading to possible `null` returns when accessed by other threads without prior `set` calls. This inconsistency resulted in potential `NullPointerException` or incorrect logging behavior, causing less informative logs or unhandled exceptions in multi-threaded use.
+
+Evidence of this bug is witnessed in multi-threaded scenarios where `cVerbose` unexpectedly returns `null`, as showcased by the failing test `testDateTimeZoneBuilder` during concurrent thread execution.
+
+The fix utilizes `ThreadLocal`'s `initialValue` method to set `Boolean.FALSE` as the default for each thread independently, ensuring no `null` references and consistent verbosity across threads, aligning with the intended design for separate verbosity states per thread without manual initialization.

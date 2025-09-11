@@ -1,0 +1,7 @@
+The bug in the original code arises because it attempts to call `getClass()` on elements of the `array` without checking for null values, causing a `NullPointerException` when a null element is encountered. This violates the expectation, as per the class documentation, that the method should handle null inputs gracefully.
+
+The consequence of this bug is that the method fails when null elements are present in the input array, leading to runtime exceptions and incorrect behavior. 
+
+Evidence of this issue is available in the `testToClass_object` unit test, which includes scenarios where the input array contains nulls. It expects the method to return an output array with corresponding null entries, indicating null elements are legitimate and must be managed properly.
+
+To fix the bug, a null check is added within the loop. For null elements in the input array, `null` is assigned directly to the corresponding index in the resulting array, ensuring the method correctly handles null inputs and preserves robustness.

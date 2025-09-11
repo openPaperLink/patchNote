@@ -1,0 +1,7 @@
+The bug in the original code arises from improper handling of date calculations when adding or subtracting months within the `BasicMonthOfYearDateTimeField` class. The logic fails to adjust the month value correctly during wrap-around scenarios, such as crossing the December-January boundary, leading to errors in date arithmetic operations.
+
+The bug's consequences include erroneous month field values, breaking expected behavior in tests like `testPlusMonths_int_negativeEndOfMonthAdjust` and `testMinusMonths_int_negativeFromLeap`. These tests demonstrate incorrect date adjustments when month manipulations span boundaries or involve leap years, leading to invalid or unexpected outcomes.
+
+Evidence of the bug is seen in the failure of unit tests where expected results differ from actual outcomes due to improper month calculations. For instance, subtracting one month from March 31 incorrectly computes the resulting date, deviating from the expected February 29.
+
+The fix involves adding logic to handle cases where the `monthOfYear` field is the largest field in the partial being manipulated. By using wrap-around arithmetic with modulo operations, the method ensures accurate month values within the 1–12 range, maintaining consistency in date calculations, including edge cases like leap years and end-of-month adjustments.

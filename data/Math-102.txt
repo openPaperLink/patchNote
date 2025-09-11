@@ -1,0 +1,5 @@
+The bug was caused by a mismatch between the total sum of `expected` and `observed` frequencies during the chi-square calculation. The previous implementation failed to rescale the expected values when their total sum differed from the observed, violating the chi-square test's assumption of matching total sums. 
+
+This resulted in statistical inaccuracies, where the computed chi-square value could be improperly inflated or deflated, leading to misleading hypothesis test outcomes, especially in unit tests with large or disproportionate datasets. Notably, unit tests like `testChiSquareLargeTestStatistic` and `testChiSquare` revealed inaccuracies due to such sum mismatches.
+
+The fix involves calculating the sums of the `expected` and `observed` arrays, and if they differ beyond a small tolerance, rescaling the `expected` values by a computed ratio. This adjustment ensures accuracy by maintaining the necessary assumption of matching totals, as validated by unit tests.

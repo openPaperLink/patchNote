@@ -1,0 +1,7 @@
+The bug is caused by incorrect iteration over the weights array when computing the weighted variance. The original code iterates over the entire `weights` array using `weights.length`, ignoring the `begin` and `length` parameters, which leads to the inclusion of irrelevant weights or omission of necessary ones when subsets of the weights array are analyzed.
+
+As a consequence, the variance calculation becomes inaccurate when weights are given for specific array segments, potentially resulting in misleading statistical outcomes in applications involving sample distributions, data analysis, or optimization.
+
+Evidence of the bug can be shown by running test cases where weights outside the specified segment (`begin` to `begin + length`) are incorrectly included, or weights within the intended segment are omitted due to incorrect loop limits.
+
+The issue is resolved by using the loop `for (int i = begin; i < begin + length; i++)` to compute `sumWts` for the specified range, thus ensuring the correct segment of weights is evaluated and enhancing the accuracy of the calculation.

@@ -1,0 +1,5 @@
+The bug in the `BooleanUtils` class is due to a missing return statement when evaluating three-character strings for a match with "yes". Without returning false for non-matching strings, execution improperly falls through to the logic meant for four-character strings. This causes inaccurate boolean evaluations for inputs like "yea" or "xyz", leading to incorrect application logic or behaviors.
+
+Evidence of the bug is visible in the `test_toBoolean_String` unit tests, where edge cases could trigger incorrect behavior due to this logic oversight. Consequently, these non-matching strings improperly influence boolean evaluations.
+
+The fix involves adding a `return false;` statement for three-character strings when they do not match "yes". This ensures that unrecognized inputs correctly result in a false return, preventing erroneous fall-through to unrelated logic blocks.
