@@ -1,0 +1,7 @@
+{
+  "description" : "the following is information about java class related with the patch",
+  "information" : [ {
+    "className" : "BigFraction.java",
+    "classAnnotation" : "/** \n * Representation of a rational number without any overflow. This class is immutable.\n * @version $Id$\n * @since 2.0\n */\n"
+  } ]
+}
