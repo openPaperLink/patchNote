@@ -1,0 +1,11 @@
+**Cause of the Bug:**  
+The bug arose because the code did not exclude singleton getter method calls from variable inlining during the optimization pass, potentially disrupting the singleton pattern that ensures only one instance of a class exists.
+
+**Consequences of the Bug:**  
+Inlining singleton getters can alter the logic related to instance management, potentially leading to multiple instances being created instead of one, violating the singleton pattern and causing inconsistent states that are difficult to diagnose.
+
+**Evidence:**  
+The test `testSingletonGetter1` demonstrates functionality using `goog.addSingletonGetter`, confirming the importance of maintaining singleton behavior and indicating mishandling during inlining.
+
+**Fix:**  
+The fix involves adding a conditional check that prevents the inlining of nodes identified as singleton getters, ensuring the intended singleton behavior and structure are preserved.

@@ -1,0 +1,7 @@
+The bug in the `TypedScopeCreator` class arises from incorrect logic when determining if a property is inferred, particularly when a function is assigned to a property. The original code overly simplified the check for the `inferred` flag by focusing primarily on whether `rhsValue` is a function, neglecting contextual factors like the presence of `info` or whether the property (`qName`) is declared in the `scope`.
+
+This flaw causes incorrect treatment of some properties as "inferred," leading to errors in type-checking and symbol resolution. For instance, properties with defined values may be misclassified, causing issues like those shown in `testIssue586`, where a function is improperly called with incorrect arguments due to an inaccurate type signature.
+
+The evidence is provided by the failing `testIssue586` unit test, which reveals that incorrect management of the `inferred` flag leads to misleading errors during compilation or static analysis.
+
+The fix introduces additional checks to ensure the `inferred` flag is cleared when appropriate, such as when documentation information (`info != null`) is present or when the property is properly scoped and declared. This adjustment corrects the classification of properties, improving the accuracy of type-checking and analysis.

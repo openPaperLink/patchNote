@@ -1,0 +1,7 @@
+The bug is caused by inconsistent treatment of the vertical tab character ('\u000b') as whitespace across different JavaScript environments, with IE handling it differently from ECMAScript. This inconsistency can lead to unexpected results when parsing strings containing this character, such as erroneous numeric conversions or logic errors.
+
+The consequences of the bug include incorrect interpretation of numeric values and improper behavior of scripts relying on whitespace checks, particularly in Internet Explorer scenarios, causing scripts to fail or behave unpredictably.
+
+Evidence of the bug is demonstrated by the `testIEString` test, which verifies the incorrect handling of strings like `"\v1"` due to the varying interpretation of the vertical tab character.
+
+The fix involves modifying the `getStringNumberValue` method to return `null` when `rawJsString` contains a vertical tab, preventing misinterpretation as a numeric value. Additionally, the `isStrWhiteSpaceChar` method is updated to return `TernaryValue.UNKNOWN` for vertical tabs, reflecting environmental uncertainty. This ensures consistent handling that aligns with varied browser interpretations.

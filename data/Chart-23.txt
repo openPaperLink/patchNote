@@ -1,0 +1,9 @@
+**Summary:**
+
+1. **Cause of the bug:** The bug is due to the lack of a correctly overridden `equals` method in the `MinMaxCategoryRenderer` class, which fails to consider the fields `plotLines`, `groupPaint`, and `groupStroke`, resulting in reliance on the default `equals` behavior that does not account for these fields.
+
+2. **Consequences of the bug:** This leads to incorrect behavior in comparing instances of `MinMaxCategoryRenderer`, especially when used in data structures like Sets or methods that depend on object equality, causing logical errors in applications.
+
+3. **Evidence:** The `testEquals` unit test demonstrates the necessity for these fields in the equality check. Changes in `plotLines`, `groupPaint`, or `groupStroke` should affect equality, but without the correct `equals` method, these changes do not impact the equality as they should.
+
+4. **Fix:** Implement an `equals` method that compares `plotLines`, `groupPaint`, and `groupStroke` properties in addition to calling `super.equals(obj)`, restoring correct object comparison and ensuring proper functionality.

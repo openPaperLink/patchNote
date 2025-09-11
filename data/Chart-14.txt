@@ -1,0 +1,7 @@
+The bug in the `CategoryPlot` and `XYPlot` classes arises from the absence of a null check for the `markers` variable before attempting to remove a marker, leading to a `NullPointerException` if the `markers` list is null due to no markers being added for a specific domain or range index.
+
+The consequences include potential runtime exceptions that disrupt program execution, causing breakdowns in plot functionality and unexpected application behavior or crashes when marker removal is attempted without any markers present.
+
+Evidence of the issue is found in unit tests such as `testRemoveDomainMarker` and `testRemoveRangeMarker`, which now pass using assertions to verify that the function does not throw exceptions and correctly returns `false` when no markers are present to remove.
+
+The fix involves adding a null check for `markers` and returning `false` if it is null. This prevents calling `remove` on a null list, avoiding `NullPointerException`, while signaling that no marker was removed, thus maintaining expected behavior.

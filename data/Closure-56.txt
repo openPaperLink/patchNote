@@ -1,0 +1,5 @@
+**Summary:**
+
+The bug is caused by improper handling of the `pos` variable when it exceeds the length of the `js` string in the `SourceFile` class. Without adequate boundary checks, attempting to execute `js.substring(pos, js.length())` when `pos` is out of bounds can trigger a `StringIndexOutOfBoundsException`. As a consequence, if `js` lacks a newline character and `pos` equals the length of `js`, this results in invalid substrings or runtime exceptions, disrupting program functionality reliant on correct line access.
+
+Evidence from the `testExceptNoNewLine` test demonstrates the bug's impact, confirming the incorrect behavior when attempting to access lines beyond the file's end. The fix involves introducing a boundary check to return `null` if `pos >= js.length()`, ensuring proper handling and avoiding exceptions.

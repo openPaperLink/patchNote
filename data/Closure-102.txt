@@ -1,0 +1,7 @@
+The bug arises due to the incorrect placement of the `removeDuplicateDeclarations` method within the `process` method of the `Normalize` class. Initially, it was called after the `MAKE_LOCAL_NAMES_UNIQUE` logic, causing conflicts when duplicate variable declarations were removed too late, leading to issues like shadowing or overriding during renaming logic.
+
+The consequence is a failure to properly handle duplicate variable declarations at the correct stage, disrupting simplification for downstream compiler passes, and potentially causing semantic errors, incorrect scoping, or unintended behavior in the compiled code.
+
+Evidence from the `testIssue115` test highlights the issue, where a function manipulating the `arguments` object failed due to the improper ordering, affecting scope construction and name resolution when duplicate declarations were not removed timely.
+
+The fix involves reordering the call to `removeDuplicateDeclarations` before the `MAKE_LOCAL_NAMES_UNIQUE` logic, ensuring duplicate declarations are eliminated earlier to maintain consistent and conflict-free scoping, allowing subsequent passes to operate correctly.

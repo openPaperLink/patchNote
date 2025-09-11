@@ -1,0 +1,9 @@
+Summary:
+
+1. **Cause of the Bug:** The bug arises because the tooltip text is directly included in the HTML `title` attribute without escaping special characters like `&`, `<`, `>`, `"`, or `'`, which can disrupt HTML structure.
+
+2. **Consequences of the Bug:** If the tooltip text contains special characters, the resulting HTML may be invalid or behave unpredictably in browsers, potentially degrading user experience and exposing vulnerabilities such as XSS attacks.
+
+3. **Evidence:** The issue is confirmed by failing unit tests like `testGenerateURLFragment`, which show that a tooltip with special characters, such as `Series "A", 100.0`, results in invalid HTML output.
+
+4. **Fix:** To resolve the bug, the `htmlEscape` method from `ImageMapUtilities` should be used to convert the tooltip text into a safe, escaped format. This ensures all special characters are properly represented, producing valid HTML and safeguarding against malformed input.
